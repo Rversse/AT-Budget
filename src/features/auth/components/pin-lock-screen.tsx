@@ -9,6 +9,7 @@ import {
 } from '@/lib/security/pin'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   onUnlock: () => void
@@ -26,12 +27,17 @@ export function PinLockScreen(
   const [confirmPin, setConfirmPin] =
     useState('')
 
+  const [
+  isWrongPin,
+  setIsWrongPin,
+] = useState(false)
+
   const creatingPin = !savedPin
 
   function handleSubmit() {
     if (creatingPin) {
       if (pin.length !== 4) {
-        alert(
+        toast.error(
           'PIN must be 4 digits',
         )
 
@@ -39,7 +45,9 @@ export function PinLockScreen(
       }
 
       if (pin !== confirmPin) {
-        alert('PIN not match')
+        toast.error(
+          'PIN does not match',
+        )
 
         return
       }
@@ -54,7 +62,7 @@ export function PinLockScreen(
     const valid = verifyPin(pin)
 
     if (!valid) {
-      alert('Wrong PIN')
+      toast.error('Wrong PIN')
 
       return
     }
@@ -84,27 +92,53 @@ export function PinLockScreen(
   inputMode="numeric"
   maxLength={4}
   placeholder="••••"
-  className="text-center text-2xl tracking-[12px]"
+  className={[
+  'pl-5 text-center font-mono text-2xl tracking-[20px] transition',
+  isWrongPin
+    ? 'animate-[shake_0.25s_ease-in-out]'
+    : '',
+  isWrongPin
+    ? 'border-red-500 ring-2 ring-red-200'
+    : '',
+].join(' ')}
   value={pin}
   onChange={(e) => {
     const value =
-      e.target.value.replace(
-        /\D/g,
-        '',
-      )
+      e.target.value
+        .replace(/\D/g, '')
+        .slice(0, 4)
 
     setPin(value)
-  }}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      handleSubmit()
+
+    if (
+      !creatingPin &&
+      value.length === 4
+    ) {
+      const valid =
+        verifyPin(value)
+
+      if (valid) {
+        props.onUnlock()
+
+        return
+      }
+
+toast.error('Wrong PIN')
+
+setIsWrongPin(true)
+
+setPin('')
+
+setTimeout(() => {
+  setIsWrongPin(false)
+}, 500)
     }
   }}
 />
 
           {creatingPin && (
             <Input
-              className="text-center text-2xl tracking-[12px]"
+              className="pl-5 text-center font-mono text-2xl tracking-[20px]"
               type="password"
               inputMode="numeric"
               maxLength={4}
@@ -122,14 +156,39 @@ export function PinLockScreen(
             />
           )}
 
-          <Button
-            className="w-full"
-            onClick={handleSubmit}
-          >
-            {creatingPin
-              ? 'Create PIN'
-              : 'Unlock'}
-          </Button>
+{creatingPin && (
+  <Button
+    className="w-full"
+    onClick={handleSubmit}
+  >
+    Create PIN
+  </Button>
+)}
+
+{!creatingPin && (
+  <button
+    type="button"
+    className="w-full text-sm text-muted-foreground underline underline-offset-4"
+    onClick={() => {
+      const confirmed =
+        confirm(
+          'Remove current device PIN?',
+        )
+
+      if (!confirmed) {
+        return
+      }
+
+      localStorage.removeItem(
+        'app_pin',
+      )
+
+      window.location.reload()
+    }}
+  >
+    Forgot PIN?
+  </button>
+)}
         </CardContent>
       </Card>
     </div>

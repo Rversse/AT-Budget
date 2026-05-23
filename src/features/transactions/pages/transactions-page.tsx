@@ -201,7 +201,7 @@ const categoriesQuery =
 
     if (transactionsQuery.isLoading) {
   return (
-    <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-32">
+    <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-40">
       <div className="space-y-2">
         <div className="h-8 w-48 animate-pulse rounded bg-zinc-200" />
 
@@ -405,6 +405,7 @@ if (!type) {
       toast.success(
         'Transaction created',
       )
+      
       setAmount('')
       setNote('')
 
@@ -799,24 +800,17 @@ className={[
 <button
   type="button"
   className="w-full rounded-2xl border bg-white px-4 py-4 text-sm font-semibold shadow-sm transition active:scale-[0.99]"
-  onClick={() => {
-    setIsFormOpen(
-      !isFormOpen,
-    )
-
-    if (!isFormOpen) {
-      setTimeout(() => {
-        amountInputRef.current?.focus()
-      }, 150)
-    }
-  }}
+onClick={() => {
+  setIsFormOpen(
+    !isFormOpen,
+  )
+}}
 >
   {isFormOpen
     ? 'Close Transaction Form'
     : '+ Add Transaction'}
 </button>
 
-{isFormOpen && (
 <button
   type="button"
   className="fixed bottom-24 right-4 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-black text-2xl text-white shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition active:scale-95"
@@ -833,9 +827,15 @@ className={[
 >
   +
 </button>
-)}
 
-{isFormOpen && (
+<div
+  className={[
+    'overflow-hidden transition-all duration-300',
+    isFormOpen
+      ? 'max-h-300 opacity-100'
+      : 'max-h-0 opacity-0',
+  ].join(' ')}
+>
 <form
   onSubmit={(e) => {
     e.preventDefault()
@@ -857,6 +857,10 @@ onClick={() => {
   setType('income')
   setCategoryId('')
   setToWalletId('')
+
+  setTimeout(() => {
+    amountInputRef.current?.focus()
+  }, 100)
 }}
             >
               Income
@@ -873,6 +877,10 @@ onClick={() => {
   setType('expense')
   setCategoryId('')
   setToWalletId('')
+
+  setTimeout(() => {
+    amountInputRef.current?.focus()
+  }, 100)
 }}
             >
               Expense
@@ -888,6 +896,10 @@ type === 'transfer'
 onClick={() => {
   setType('transfer')
   setCategoryId('')
+
+  setTimeout(() => {
+    amountInputRef.current?.focus()
+  }, 100)
 }}
             >
               Transfer
@@ -994,7 +1006,7 @@ onChange={(e) => {
           </select>
 
 {walletId && (
-  <div className="rounded-2xl border bg-white p-4 shadow-sm">
+  <div className="rounded-2xl border-0 shadow-sm transition hover:shadow-md active:scale-[0.98]">
     <p className="text-xs text-muted-foreground">
       Current Balance
     </p>
@@ -1093,7 +1105,7 @@ onChange={(e) => {
 
 <Button
   type="submit"
-  className="h-12 w-full rounded-xl text-base font-semibold shadow-sm transition active:scale-[0.99]"
+  className="h-12 w-full rounded-xl text-base font-semibold shadow-sm transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
 disabled={
   createTransactionMutation.isPending ||
   transferMutation.isPending ||
@@ -1127,8 +1139,8 @@ disabled={
         </CardContent>
       </Card>
       </form>
-)}
-      <div className="space-y-4">
+</div>
+      <div className="space-y-6">
 {processedTransactions.length === 0 && (
   <Card className="border-0 shadow-sm">
     <CardContent className="flex flex-col items-center justify-center p-10 text-center">

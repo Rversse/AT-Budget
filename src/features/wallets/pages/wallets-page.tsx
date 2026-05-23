@@ -31,9 +31,8 @@ const walletColors = [
   '#374151',
 ]
 
-    const [color, setColor] =
-  useState('#111827')
-
+  const [color, setColor] =
+    useState(getRandomColor)
 
   const createWalletMutation =
     useCreateWallet()
@@ -79,6 +78,15 @@ const walletColors = [
       toast.success(
         'Wallet created',
       )
+      setColor(
+  walletColors[
+    Math.floor(
+      Math.random() *
+        walletColors.length,
+    )
+  ],
+)
+
 } catch (error) {
   console.error(error)
 
@@ -95,6 +103,18 @@ const walletColors = [
   }
 }
   }
+
+function getRandomColor() {
+  return (
+    walletColors[
+      Math.floor(
+        Math.random() *
+          walletColors.length,
+      )
+    ]
+  )
+}
+
 
   async function handleArchive(
     id: string,
@@ -172,9 +192,14 @@ const walletColors = [
                 e.target.value,
               )
             }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleCreateWallet()
+              }
+            }}
           />
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap justify-center gap-2">
   {walletColors.map(
     (walletColor) => (
       <button
@@ -184,7 +209,7 @@ const walletColors = [
           setColor(walletColor)
         }
         className={[
-          'h-10 w-10 rounded-full border-4 transition',
+          'h-8 w-8 rounded-full border-4 transition',
           color === walletColor
             ? 'border-black scale-110'
             : 'border-white',
@@ -199,7 +224,7 @@ const walletColors = [
 </div>
 
           <Button
-            className="h-12 w-full rounded-xl text-base font-semibold shadow-sm transition active:scale-[0.99]"
+            className="h-12 w-full rounded-xl text-base font-semibold shadow-sm transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
             onClick={
               handleCreateWallet
             }
@@ -241,7 +266,7 @@ const walletColors = [
             >
               <CardContent className="flex items-start justify-between gap-4 p-5">
                 <div className="space-y-1.5">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <div
                       className="h-4 w-4 rounded-full ring-2 ring-white"
                       style={{

@@ -30,7 +30,7 @@ export function DashboardPage() {
 
 if (dashboardQuery.isLoading) {
   return (
-    <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-32">
+    <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-40">
       <div className="space-y-2">
         <div className="h-8 w-40 animate-pulse rounded bg-zinc-200" />
 
@@ -65,7 +65,7 @@ if (dashboardQuery.isLoading) {
 
 if (!dashboard) {
   return (
-    <div className="min-h-screen bg-zinc-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 p-4">
       <Card className="border-0 shadow-sm">
         <CardContent className="flex flex-col items-center justify-center p-10 text-center">
           <div className="text-4xl">
@@ -94,7 +94,7 @@ if (
     0
 ) {
   return (
-    <div className="min-h-screen bg-zinc-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 p-4">
       <Card className="border-0 shadow-sm">
         <CardContent className="flex flex-col items-center justify-center p-10 text-center">
           <div className="text-4xl">
@@ -183,7 +183,7 @@ const processedTransactions = (
   .slice(0, 3)
   
     return (
-    <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-32">
+    <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-40">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">
           Dashboard

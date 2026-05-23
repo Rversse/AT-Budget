@@ -128,6 +128,12 @@ export function CategoriesPage() {
   const categories =
     (categoriesQuery.data ??
       []) as any[]
+      
+      const filteredCategories =
+  categories.filter(
+    (category) =>
+      category.type === type,
+  )
 
   return (
     <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-32">
@@ -179,19 +185,24 @@ export function CategoriesPage() {
             </Button>
           </div>
 
-          <Input
-            className="h-12 rounded-xl border bg-white shadow-sm"
-            placeholder="Category name"
-            value={name}
-            onChange={(e) =>
-              setName(
-                e.target.value,
-              )
-            }
-          />
+              <Input
+                className="h-12 rounded-xl border bg-white shadow-sm"
+                placeholder="Category name"
+                value={name}
+                onChange={(e) =>
+                  setName(
+                    e.target.value,
+                  )
+                }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleCreate()
+                  }
+                }}
+              />
 
           <Button
-            className="h-12 w-full rounded-xl text-base font-semibold shadow-sm transition active:scale-[0.99]"
+            className="h-12 w-full rounded-xl text-base font-semibold shadow-sm transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
             onClick={handleCreate}
             disabled={
               createCategoryMutation.isPending
@@ -223,7 +234,7 @@ export function CategoriesPage() {
       )}
 
       <div className="space-y-4">
-        {categories
+        {filteredCategories
           .filter(
             (
               category: any,
@@ -249,7 +260,7 @@ export function CategoriesPage() {
                 key={
                   category.id
                 }
-                className="border-0 shadow-sm transition active:scale-[0.99]"
+                className="border-0 shadow-sm transition active:scale-[0.98]"
               >
                 <CardContent className="flex items-start justify-between gap-4 p-5">
                   <div className="space-y-3">

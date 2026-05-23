@@ -136,7 +136,7 @@ export function SettingsPage() {
 
         <Card className="border-0 shadow-sm">
           <CardContent className="space-y-4 p-5">
-            <p className="text-sm font-medium text-muted-foreground">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               SECURITY
             </p>
 
@@ -157,7 +157,7 @@ export function SettingsPage() {
 
         <Card className="border-0 shadow-sm">
           <CardContent className="space-y-4 p-5">
-            <p className="text-sm font-medium text-muted-foreground">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               EXPORT
             </p>
 
@@ -194,7 +194,7 @@ export function SettingsPage() {
 
         <Card className="border-0 shadow-sm">
           <CardContent className="space-y-4 p-5">
-            <p className="text-sm font-medium text-red-500">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground text-red-500">
               DANGER ZONE
             </p>
 
