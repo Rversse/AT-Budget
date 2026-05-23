@@ -114,73 +114,9 @@ if (
   )
 }
     
-const processedTransactions = (
+const processedTransactions =
   dashboard.recentTransactions ??
   []
-)
-  .reduce(
-    (
-      acc: any[],
-      transaction: any,
-    ) => {
-      if (
-        !transaction.transfer_group_id
-      ) {
-        acc.push(transaction)
-
-        return acc
-      }
-
-      const existingTransfer =
-        acc.find(
-          (item) =>
-            item.transfer_group_id ===
-            transaction.transfer_group_id,
-        )
-
-      if (existingTransfer) {
-        if (
-          transaction.type ===
-          'income'
-        ) {
-          existingTransfer.toWallet =
-            transaction.wallets?.name
-        }
-
-        if (
-          transaction.type ===
-          'expense'
-        ) {
-          existingTransfer.fromWallet =
-            transaction.wallets?.name
-        }
-
-        return acc
-      }
-
-      acc.push({
-        ...transaction,
-
-        fromWallet:
-          transaction.type ===
-          'expense'
-            ? transaction.wallets
-                ?.name
-            : '',
-
-        toWallet:
-          transaction.type ===
-          'income'
-            ? transaction.wallets
-                ?.name
-            : '',
-      })
-
-      return acc
-    },
-    [],
-  )
-  .slice(0, 3)
   
     return (
     <div className="min-h-screen space-y-6 bg-zinc-50 p-4 pb-40">

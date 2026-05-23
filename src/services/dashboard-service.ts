@@ -185,6 +185,9 @@ const existing =
     id:
       transaction.transfer_group_id,
 
+    transfer_group_id:
+      transaction.transfer_group_id,
+
     transaction_date:
       transaction.transaction_date,
 
