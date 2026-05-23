@@ -178,15 +178,24 @@ export async function getDashboardData(
         return
       }
 
-      const existing =
-        groupedMap.get(
-          transaction.transfer_group_id,
-        ) || {
-          ...transaction,
+const existing =
+  groupedMap.get(
+    transaction.transfer_group_id,
+  ) || {
+    id:
+      transaction.transfer_group_id,
 
-          fromWallet: '',
-          toWallet: '',
-        }
+    transaction_date:
+      transaction.transaction_date,
+
+    amount:
+      transaction.amount,
+
+    type: 'transfer',
+
+    fromWallet: '',
+    toWallet: '',
+  }
 
       if (
         transaction.type ===
